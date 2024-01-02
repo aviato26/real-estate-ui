@@ -1,0 +1,32 @@
+
+@font-face {
+    font-family: MainFont;
+    /* src: url('../fonts/Main-regular.ttf'); */
+    src: url('../fonts/Lucian.otf');    
+  }
+
+
+.header{
+    background-color: #494A4B;
+    border: 2px solid black;
+    color: white;
+    display: none;
+    justify-content: space-between;
+    font-family: MainFont;
+}
+
+.header h2{
+    margin: 0 0 0 5vw;
+    font-size: calc(2vw + 12px);
+}
+
+.header-links ul{
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    padding: 0;
+}
+
+.header-links li{
+    margin: 0 2vw;
+}

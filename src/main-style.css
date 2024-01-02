@@ -1,0 +1,20 @@
+
+@font-face {
+    font-family: MainFont;
+    /* src: url('../fonts/Main-regular.ttf'); */
+    src: url('/fonts/Lucian.otf');    
+  }
+
+
+html, body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: black;
+}
+
+#loading-component{
+    color: white;
+    font-size: 8vw;
+}
+

@@ -1,0 +1,58 @@
+
+@font-face {
+    font-family: MainFont;
+    /* src: url('../fonts/Main-regular.ttf'); */
+    src: url('../fonts/Lucian.otf');    
+  }
+
+  
+
+
+.home-hero-section{
+
+    height: calc(100vh);            
+}
+
+
+.tiles{
+    opacity: 0;
+    left: -110vw;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-attachment: 'fixed';    
+    background-image: url('/images/r-architecture-2gDwlIim3Uw-unsplash.jpg');                                
+}
+
+.main-home-container{
+    position: relative;
+}
+
+.hero-title{
+    font-family: MainFont;
+    margin: 0;
+    color: white;
+    position: absolute;
+    font-size: calc(8.6vw + 5px);
+    font-weight: 100;
+    width: 100vw;
+    text-align: center;
+    bottom: 38.3vh;
+    letter-spacing: 0.45vw;
+    opacity: 0;
+}
+
+
+.hero-title span{
+    position: relative;
+    left: -vw;
+}
+
+
+canvas{
+    /*
+    width: 100vw !important;
+    height: 100vh !important;
+    */
+}
+

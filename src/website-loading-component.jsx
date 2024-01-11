@@ -16,18 +16,6 @@ const LoadingComponent = (scene) => {
         }
     })
 
-    { /* return <Html center> { progress } % loaded </Html> 
-            return <Html center>
-                <div id='loading-component'>
-                    { `${progress.toFixed(0)}%` }
-                </div>
-            </Html>
-      */
-
-            return 
-
-     }
-
 }
 
 export default LoadingComponent;

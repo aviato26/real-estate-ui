@@ -180,6 +180,8 @@ export const heroFragmentShader = `
 
         gl_FragColor = mix( f2, f1, switch2 );                
 
+        //gl_FragColor = t3;                        
+
         //gl_FragColor = mix( vec4(0) , mix(t2, t3, side ), a );                
     }
 

@@ -4,21 +4,17 @@ import { useFrame } from "@react-three/fiber";
 import React, { useRef, useState } from "react";
 import { SphereGeometry, MeshBasicMaterial, Mesh, Color } from "three";
 
-let geo = new SphereGeometry(.1, 20, 20);
-let mat = new MeshBasicMaterial( { color: 0xffffff } );
-let mesh = new Mesh(geo, mat);
-
-mesh.position.y = 5.5;
-mesh.position.z += 1.;
-
 
 const SpiralVolumeEffect = (props) => {
 
-    const m = useRef(mesh);
+    let geo = new SphereGeometry(.1, 20, 20);
+    let mat = new MeshBasicMaterial( { color: 0xffffff } );
+    let mesh = new Mesh(geo, mat);
 
-    useFrame((state, delta) => {
-        //mesh.position.y += Math.sin(state.clock.getElapsedTime()) * 0.1;
-    })
+    mesh.position.y = 5.5;
+    mesh.position.z += 1.;
+
+    const m = useRef(mesh);
 
     if(props.camera.current){
 
@@ -30,7 +26,7 @@ const SpiralVolumeEffect = (props) => {
                 </mesh>
 
                 <mesh position={ [ 0, 5, 1. ] } >
-                            <planeGeometry args={ [ 10, 10 ] } />
+                            <planeGeometry args={ [ 10, 10, 1, 1 ] } />
                             <shaderMaterial 
                                 uniforms={{
                                     //lightPos: { value: mesh.position },
@@ -122,7 +118,8 @@ const SpiralVolumeEffect = (props) => {
                                     vec4 color = vec4(vec3(scatter + dot(lightDir, cameraToWorldDir) * .5 * exp(-.1 * rand(lightDir.xy))), .5);
                                     vec4 finalColor = fromLinear( color );
                     
-                                    gl_FragColor = vec4(vec3(scatter + dot(lightDir, cameraToWorldDir) * .5 * exp(-.1 * rand(lightDir.xy))), .7);                                
+                                    //gl_FragColor = vec4(vec3(scatter + dot(lightDir, cameraToWorldDir) * .5 * exp(-.1 * rand(lightDir.xy))), .7);                                
+                                    gl_FragColor = vec4(vec3(scatter + dot(lightDir, cameraToWorldDir) * .5 * exp(-.1 * rand(lightDir.xy))), .5);                                                                    
                                 }
 
                                 "

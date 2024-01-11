@@ -13,6 +13,8 @@ import './home-style.css'
 import Hero3DScene from './hero-3d-scene'
 import SearchPage from "../../SearchPage/SearchPage";
 
+import SearchBar from "../../SearchPage/SearchBar";
+
 import SceneContainer from "../../scene-container";
 
 import { DOF } from "./DepthOfField";
@@ -40,15 +42,22 @@ const HomePage = () => {
         gsap.to( '.hero-title span', { opacity: 0, delay: 2, stagger: 0.1 } );        
     })    
 
+    /* 
+        <OrthographicCamera makeDefault ref={cam} position={ [0, 0, 0] } left={-1.} right={1.} top={1.} bottom={-1.} near={-1000} far={1000} />
+        <SceneContainer camera={cam} textAnime={ textAnime } textAnime2={ textAnime2 } />    
+    */
+
     return(
         <div className="home-hero-section" ref={ titleText } >
-            <Canvas scene={{ background: '0x000000' }} >
+            <Canvas resize={ { scroll: false } } scene={{ background: '0x000000'  }} >
                 <Perf />
                 <OrthographicCamera makeDefault ref={cam} position={ [0, 0, 0] } left={-1.} right={1.} top={1.} bottom={-1.} near={-1000} far={1000} />
-                <SceneContainer camera={cam} textAnime={ textAnime } textAnime2={ textAnime2 } />
+                <SceneContainer camera={cam} textAnime={ textAnime } textAnime2={ textAnime2 } />                    
             </Canvas>
 
-            <h1 className="hero-title"><span>SOUTH</span> <span>BAY</span> <span>ESTATES</span></h1>                        
+            <h1 className="hero-title"><span>SOUTH</span> <span>BAY</span> <span>ESTATES</span></h1>       
+            <SearchBar />
+
             {/*<h1 className="hero-title"><span>SUNNY</span> <span>SIDE</span> <span>ESTATES</span></h1>*/}
         </div>
     )

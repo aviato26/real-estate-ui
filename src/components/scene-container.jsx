@@ -18,6 +18,7 @@ const SceneContainer = (props) => {
     const mainMesh = useRef();
     const searchPageCamera = useRef();
 
+
     const mod = useRef({});
     mod.current.count = 0;
     mod.current.loaded = false;
@@ -46,11 +47,13 @@ const SceneContainer = (props) => {
     let testCam = new PerspectiveCamera(5, width / height, 1, 1000);
     testCam.position.z = 5;
 
+    
     if( (width / height) < 1. ){
         scale = [ (1. / 2721) * 4328 , 1, 1]
     } else{
         scale = [1, 1, 1]
     }
+    
 
     const { contextSafe } = useGSAP({ scope: mod }); // we can pass in a config object as the 1st parameter to make scoping simple
 
@@ -82,10 +85,7 @@ const SceneContainer = (props) => {
         planeMesh.current.material.uniforms.time.value = mod.current.tileTransition1;
         planeMesh.current.material.uniforms.switch2.value = mod.current.tileTransition2;
 
-        //console.log(mod.current.spiralAnimation)
-
-        //console.log(mod.current.spiralAnimation)
-
+        
         if(mod.current.count < progress.toFixed(0)){
             mod.current.count += 1.;
         } else {
@@ -93,7 +93,7 @@ const SceneContainer = (props) => {
                 transition();
                 mod.current.loaded = true;
             }
-        }   
+        } 
 
         //console.log(mod.current.loaded)
 
@@ -116,6 +116,11 @@ const SceneContainer = (props) => {
         
     })
 
+    useEffect(() => {
+        if(mod.current.spiralAnimation.s1){
+            //mod.current.spiralAnimation.s1(true);
+        }
+    })
 
     return(
         <>
@@ -159,21 +164,7 @@ const SceneContainer = (props) => {
                             vec2 d = abs(p)-b;
                             return length(max(d,0.0)) + min(max(d.x,d.y),0.0);
                         }
-
-                        /*
-                        void main(){
-                            vec2 uv = vuv;
-                            vec4 t = texture(tex, uv);
-                            vec4 t2 = texture(tex2, uv);                            
-
-                            gl_FragColor = t;
-                            //gl_FragColor = mix(t, t2, 1.);
-                        }
-                        */
-
-
-
-
+                        
 
                         void main(){
                             vec2 uv = vuv;
@@ -195,19 +186,23 @@ const SceneContainer = (props) => {
                             vec3 box2 = vec3(1) * (1. - b2);                             
 
                             vec4 t = texture(tex, vuv);                            
+                            vec4 t2 = texture(tex2, vuv);                                                        
 
                             vec3 bmix = mix( box2, box1, step(0.1, (uv2.x + 0.3) - ( counter / 100. ) * 0.4 ) );
 
                             vec4 bmix2 = mix( vec4(bmix, 1.), t, l2 );
                         
                             // Output to screen
-                            //gl_FragColor = vec4(.01 / (col) + (box1 * vec3(.05)) ,1.0);
 
                             // this makes a cool ink type of spreading animation
                             //gl_FragColor = mix( vec4(.01 / (col) + (box1 * vec3(.05)) ,1.0), t, step(0.01, length(t.r + uv4) - l2 ) );                            
                             
                             //gl_FragColor = mix( bar, t, 1. );                                                        
+                            
                             gl_FragColor = bmix2;
+                            
+                            //gl_FragColor = t;                            
+
                             //gl_FragColor = mix( vec4(0), bmix2, l2 );                            
                         }
 

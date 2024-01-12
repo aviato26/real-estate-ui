@@ -18,7 +18,7 @@
     align-items: center;
 
     background: transparent;
-    border: 2px solid white;
+    border: 1px solid white;
     border-radius: 10px;
     padding: 5px 0px 5px 7px;
 }
@@ -30,11 +30,19 @@
     padding: 0 10px;
     color: white;
     width: 65%;
-    border: 2px solid white;
+    border: 1px solid white;
     border-radius: 10px;
     background: transparent;
 }
 
+#search-bar input:hover{
+    border: 2px solid white;
+}
+
+#search-bar input:focus{
+    outline: none !important;
+    border: 3px solid white;
+}
 
 #search-bar button{
     margin: auto 3vw;
@@ -42,13 +50,22 @@
     font-size: calc(1.4vw + 10px);
     background: transparent;
     color: white;
-    border: 2px solid white;
+    border: 1px solid white;
     border-radius: 10px;
+    letter-spacing: 1px;
+    transition: 0.1s;
 }
 
-#house-items{
-
+#search-bar button:hover{
+    border: 2px solid white;    
+    transition: 0.1s;
 }
+
+#search-bar button:active{
+  border: 2px solid rgba(0, 0, 0, 1);
+  letter-spacing: 2px;
+}
+
 
 .house-items-title{
     color: white;

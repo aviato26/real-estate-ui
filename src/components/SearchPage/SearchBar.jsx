@@ -7,6 +7,7 @@ import './search-page.css'
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { ScrollToPlugin } from "gsap/all";
+import { useFrame } from "@react-three/fiber";
 
 const SearchBar = (props) => {
         
@@ -23,6 +24,7 @@ const SearchBar = (props) => {
 
     const [ images, updateImages ] = useState(ims);
     const rf = useRef();
+    const searchBar = useRef();
     //rf.current.initialRender = false;
 
     gsap.registerPlugin( ScrollTrigger, ScrollToPlugin )
@@ -31,11 +33,19 @@ const SearchBar = (props) => {
     gsap.to('#search-bar', { opacity: 1, delay: 12 });
 
     // animation for the real estate image reveal once user makes request
-    const tm = gsap.timeline({  });
+    const tm = gsap.timeline({ });
 
-    tm.to(window, { duration: 1, scrollTo: "#house-items", ease: "back.out(1.8)", delay: 2  });                
-    tm.to('#image-container img', { opacity: 0, }, '' )
-    tm.to('#image-container img', { opacity: 1, duration: 1, stagger: 0.1 } )
+    let dummyObj = { start: 0 }
+    tm.to(dummyObj, { start: 100, onUpdate: () => {
+        searchBar.current.style.background = `linear-gradient( to right, rgba(255, 255, 255, .3), rgba(255, 255, 255, .3) ${dummyObj.start}%, transparent, transparent 0% )`
+    }, ease: "expo.inOut", duration: 2 })    
+
+    tm.to(window, { duration: 1, scrollTo: "#house-items", ease: "expo.inOut", onComplete: () => {
+        searchBar.current.style.background = `linear-gradient( to right, rgba(100, 1, 1, 0.1), rgba(1, 1, 1, 0.1) ${0}%, transparent, transparent 0% )`
+    }  });                
+
+    tm.to('.property', { opacity: 0, }, '' )
+    tm.to('.property', { opacity: 1, duration: 1, stagger: 0.1 } )
     tm.pause();        
 
     let a = (q) => {
@@ -103,7 +113,7 @@ const SearchBar = (props) => {
 
     return(
         <div>
-            <div id="search-bar" >
+            <div id="search-bar" ref={searchBar} >
                 <input ref={rf} placeholder={query} />
                 <button onClick={fn} >Search</button>
             </div>

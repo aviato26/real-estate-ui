@@ -1,0 +1,90 @@
+
+
+#contact-container{
+    color: white;
+    font-size: 2rem;
+    text-align: center;
+    margin: 23vw 0;
+}
+
+#contact-title{
+    font-family: MainFont;
+    font-size: calc(16vw + 10px);
+    letter-spacing: 1vw;
+    position: relative;
+}
+
+#contact-title button{
+    font-family: serif;
+}
+
+#contact-title span{
+    font-size: calc(36vw + 10px);
+}
+
+#contact-title p{
+    position: relative;
+    top: -6.7vw;
+}
+
+#contact-title button{
+    position: absolute;
+    padding: 1.7vw 7.5vw;
+    font-size: calc(2vw + 10px);
+    border: 2px solid white;
+    top: 65%;
+    background: transparent;
+    color: white;
+    border-radius: 35px;
+    left: 50%;
+    letter-spacing: 0;
+    transition: 0.5s;
+    transform: translate(-50%, -50%);    
+}
+
+#contact-title button:hover{
+    letter-spacing: 3px;
+    border: 4px solid white;    
+}
+
+#contact-title button:active{
+    letter-spacing: 5px;
+    border: 4px solid black;    
+}
+
+#contact-container p{
+    display: inline-block;
+}
+
+#contact-info{
+    font-family: serif;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 6vw;
+}
+
+#contact-info div{
+    display: flex;
+    width: 33vw;    
+    flex-direction: column;
+    border-right: 2px solid white;
+}
+
+/* removing border from last column */
+#contact-info div:nth-child(3){
+    border-right: 0px solid white;
+}
+
+#contact-info div p{
+    font-size: calc(1vw + 10px);
+    margin: 1vw 0;
+    scale: 1;
+    transition: 0.5s;
+}
+
+
+#contact-info div p:hover{
+    scale: 1.1;
+}
+
+

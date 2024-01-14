@@ -6,8 +6,10 @@ import { useLoader, useFrame } from "@react-three/fiber";
 //import HeroImg from '/images/r-architecture-2gDwlIim3Uw-unsplash.jpg'
 //import HeroImg from '/images/hero-image.jpg'
 //import ColorHeroImg from '/images/kitchen.jpg'
+
 import ColorHeroImg from '/images/color-img.png'
 import HeroImg from '/images/black-white-hero-image.jpg'
+
 import './home-style.css'
 
 import { TextureLoader, Vector2 } from "three";
@@ -57,7 +59,7 @@ const Hero3DScene = (props) => {
 
     }));
 
-    useEffect(() => {
+    useEffect(() => {        
         props.getMesh.current = mesh.current;
     }, [] )
 

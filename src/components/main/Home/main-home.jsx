@@ -56,10 +56,9 @@ const HomePage = () => {
                 <SceneContainer camera={cam} textAnime={ textAnime } textAnime2={ textAnime2 } />                    
             </Canvas>
 
-            <h1 className="hero-title"><span>SOUTH</span> <span>BAY</span> <span>ESTATES</span></h1>       
+            <h1 className="hero-title"><span>SOUTH</span> <span>BAY</span> <span>ESTATES</span></h1>   
 
             <SearchBar />
-
             <ContactPage />
             
             {/*<h1 className="hero-title"><span>SUNNY</span> <span>SIDE</span> <span>ESTATES</span></h1>*/}

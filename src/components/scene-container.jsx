@@ -10,6 +10,7 @@ import { useProgress } from "@react-three/drei";
 
 import Hero3DScene from "./main/Home/hero-3d-scene";
 import SearchPage from './SearchPage/SearchPage';
+import * as THREE from 'three'
 
 
 const SceneContainer = (props) => {
@@ -31,18 +32,26 @@ const SceneContainer = (props) => {
 
     const [ time, updateTime ] = useState(0);
 
-    const renderTarget = useFBO();
-    const renderTarget2 = useFBO();
+    let scale;
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+
+
+    // setting the window width and height bring fps back up to 60, with out the render target texture size goes to 4k
+    // possibly from the hero images which are 4k, going to have to lower resolution
+    const renderTarget = useFBO(width, height, {});
+    const renderTarget2 = useFBO(width, height, {});
+
+
+    //const renderTarget = useFBO();
+    //const renderTarget2 = useFBO();
+    
 
     const scene2 = new Scene();
     scene2.background = '0x000000';
 
     const scene3 = new Scene();
     scene3.background = '0x000000';   
-
-    let scale;
-    let width = window.innerWidth;
-    let height = window.innerHeight;
 
     let testCam = new PerspectiveCamera(5, width / height, 1, 1000);
     testCam.position.z = 5;
@@ -116,11 +125,6 @@ const SceneContainer = (props) => {
         
     })
 
-    useEffect(() => {
-        if(mod.current.spiralAnimation.s1){
-            //mod.current.spiralAnimation.s1(true);
-        }
-    })
 
     return(
         <>
@@ -173,10 +177,7 @@ const SceneContainer = (props) => {
                             vec2 uv2 = uv;
                              
                             uv2.x *= .8;
-                            uv2.y *= 8.;
-                            
-                            //uv3.x -= (counter / 100.) * 0.4;
-                            //uv3.x -= (l2 ) * 0.4;                            
+                            uv2.y *= 8.;                            
 
 
                             float b1 = step( 0.001, box(uv2 * 5., vec2(1.) ) );
@@ -199,11 +200,7 @@ const SceneContainer = (props) => {
                             
                             //gl_FragColor = mix( bar, t, 1. );                                                        
                             
-                            gl_FragColor = bmix2;
-                            
-                            //gl_FragColor = t;                            
-
-                            //gl_FragColor = mix( vec4(0), bmix2, l2 );                            
+                            gl_FragColor = bmix2;                 
                         }
 
 

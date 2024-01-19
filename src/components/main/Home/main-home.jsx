@@ -21,6 +21,7 @@ import SceneContainer from "../../scene-container";
 import { DOF } from "./DepthOfField";
 import { OrbitControls, OrthographicCamera } from "@react-three/drei";
 import { useGSAP } from "@gsap/react";
+import { Vector2 } from "three";
 
 
 const HomePage = () => {
@@ -32,6 +33,7 @@ const HomePage = () => {
 
     let cam = useRef(0);
     let titleText = useRef();
+    const userMouse = useRef( new Vector2(0) );    
 
     const { contextSafe } = useGSAP( { scope: titleText } );
 
@@ -41,19 +43,31 @@ const HomePage = () => {
 
     const textAnime2 = contextSafe(() => {
         gsap.to( '.hero-title span', { opacity: 0, delay: 2, stagger: 0.1 } );        
-    })    
+    })        
 
     /* 
         <OrthographicCamera makeDefault ref={cam} position={ [0, 0, 0] } left={-1.} right={1.} top={1.} bottom={-1.} near={-1000} far={1000} />
         <SceneContainer camera={cam} textAnime={ textAnime } textAnime2={ textAnime2 } />    
     */
 
+    useEffect(() => {
+        
+        document.addEventListener('mousemove', (e) => {
+            userMouse.current.x = ( e.clientX / width ) - 0.5;
+            userMouse.current.y = ( e.clientY / height ) - 0.5;
+            //console.log(userMouse.current)            
+        });
+
+    }, [])
+
+
+
     return(
         <div className="home-hero-section" ref={ titleText } >
             <Canvas resize={ { scroll: false } } scene={{ background: '0x000000'  }} >
                 <Perf />
                 <OrthographicCamera makeDefault ref={cam} position={ [0, 0, 0] } left={-1.} right={1.} top={1.} bottom={-1.} near={-1000} far={1000} />
-                <SceneContainer camera={cam} textAnime={ textAnime } textAnime2={ textAnime2 } />                    
+                <SceneContainer camera={cam} textAnime={ textAnime } textAnime2={ textAnime2 } mousePos={userMouse} />                    
             </Canvas>
 
             <h1 className="hero-title"><span>SOUTH</span> <span>BAY</span> <span>ESTATES</span></h1>   

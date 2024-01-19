@@ -5,8 +5,6 @@
     src: url('../fonts/Lucian.otf');    
   }
 
-  
-
 
 .home-hero-section{
 
@@ -54,5 +52,7 @@ canvas{
     width: 100vw !important;
     height: 100vh !important;
     */
+    position: fixed;
+    z-index: 0;
 }
 

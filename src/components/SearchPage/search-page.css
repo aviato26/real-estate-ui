@@ -66,6 +66,10 @@
   letter-spacing: 2px;
 }
 
+#house-items{
+    position: relative;
+    z-index: 2;
+}
 
 .house-items-title{
     color: white;

@@ -57,6 +57,8 @@
 }
 
 #contact-info{
+    position: relative;
+    z-index: 2;
     font-family: serif;
     display: flex;
     justify-content: center;

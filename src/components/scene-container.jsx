@@ -64,9 +64,13 @@ const SceneContainer = (props) => {
     const res = new THREE.Vector2(width, height);
 
     //const flashLightTex = useLoader(TextureLoader, '/images/flash-light-image.png');
+    //const flashLightTex = useLoader(TextureLoader, '/images/bw.png');    
     const flashLightTex = useLoader(TextureLoader, '/images/color.png');    
+    const colorTex = useLoader(TextureLoader, '/images/color.png');        
     //const flashLightNormalTex = useLoader(TextureLoader, '/images/norm2.png');
-    const flashLightNormalTex = useLoader(TextureLoader, '/images/normal.png');   
+    //const flashLightNormalTex = useLoader(TextureLoader, '/images/color.png');    
+    //const flashLightNormalTex = useLoader(TextureLoader, '/images/normal.png');   
+    const flashLightNormalTex = useLoader(TextureLoader, '/images/nm.png');       
 
     const [ flashLightCubeTex ] = useLoader(CubeTextureLoader, [ [
         '/images/cube-for-flash-light-effect/nx.jpg',
@@ -114,7 +118,9 @@ const SceneContainer = (props) => {
     const transition = contextSafe(() => {
         const t = gsap.timeline();
         t.to(mod.current, { l2: 1, duration: .5 });
+        //t.to( '.hero-title', { opacity: 1 } );        
         t.add(props.textAnime);
+        //t.to( '.hero-title span', { opacity: 0, delay: 2, stagger: 0.1 } );                
         t.add(props.textAnime2);                
         t.to(mod.current, { tileTransition1: 2.5, duration: 2.5, delay: 2 });
         t.to(mod.current, { tileTransition2: 0 });        
@@ -137,8 +143,9 @@ const SceneContainer = (props) => {
         planeMesh.current.material.uniforms.time.value = mod.current.tileTransition1;
         planeMesh.current.material.uniforms.switch2.value = mod.current.tileTransition2;
 
+        //console.log(mod.current.count, progress)
         
-        if(mod.current.count < progress.toFixed(0)){
+        if(mod.current.count < progress){
             mod.current.count += 1.;
         } else {
             if(!mod.current.loaded){
@@ -159,12 +166,13 @@ const SceneContainer = (props) => {
 
         mainMesh.current.material.uniforms.mousePos.value = props.mousePos.current;
 
-        //console.log(contactPage)
+        //console.log(state.clock.getElapsedTime())
 
         planeMesh.current.material.uniforms.spiralSceneTexture.value = renderTarget2.texture;        
 
         mainMesh.current.material.uniforms.counter.value = mod.current.count;
         mainMesh.current.material.uniforms.l2.value = mod.current.l2;
+        mainMesh.current.material.uniforms.time.value = state.clock.getElapsedTime();        
         mainMesh.current.material.uniforms.contactTransition.value = mod.current.contactTransition;        
 
         state.gl.setRenderTarget(null);        
@@ -181,7 +189,7 @@ const SceneContainer = (props) => {
                         {
                             tex: { value: null},
                             tex2: { value: null },
-                            tex3: { value: null },
+                            tex3: { value: colorTex },
                             res: { value: res },
                             flashLightTex: { value: flashLightTex },
                             flashLightNormal: { value: flashLightNormalTex },
@@ -189,13 +197,17 @@ const SceneContainer = (props) => {
                             mousePos: { value: props.mousePos.current },
                             counter: { value: 0 },
                             l2: { value: 0. },
+                            time: { value: 0. },
                             contactTransition: { value: mod.current.contactTransition }
                         }
                     }
 
+                    
+
                     vertexShader="
                         uniform sampler2D tex;
-                        uniform sampler2D tex2;          
+                        uniform sampler2D tex2;
+                        uniform sampler2D tex3;                                  
                         uniform float counter;     
                         uniform sampler2D flashLightTex;
                         uniform sampler2D flashLightNormal;      
@@ -203,6 +215,7 @@ const SceneContainer = (props) => {
                         uniform vec2 mousePos;
                         uniform float l2;        
                         uniform vec2 res;
+                        uniform float time;
                         uniform float contactTransition;
 
                         varying vec2 vuv;
@@ -219,14 +232,16 @@ const SceneContainer = (props) => {
 
                     fragmentShader="
                         uniform sampler2D tex;    
-                        uniform sampler2D tex2;                                        
+                        uniform sampler2D tex2;             
+                        uniform sampler2D tex3;                                                   
                         uniform float counter;               
                         uniform sampler2D flashLightTex;  
                         uniform sampler2D flashLightNormal;  
                         uniform samplerCube cubeMap;                                                                              
                         uniform vec2 mousePos;                                       
                         uniform float l2;                
-                        uniform vec2 res;                         
+                        uniform vec2 res;                 
+                        uniform float time;                                
                         uniform float contactTransition;                                          
 
                         varying vec2 vuv;
@@ -247,6 +262,39 @@ const SceneContainer = (props) => {
                                 1.0723499059677124, 0., 0., 1.
                             );
                         }
+
+
+                        float random(vec2 uv){
+                            float a = 12.9898;
+                            float b = 78.233;
+                            float c = 43758.543123;
+                            return fract( sin( dot( uv, vec2( a, b ) ) + time ) * c );
+                        }
+
+
+                        float noise (vec2 st) {
+                            vec2 i = floor(st);
+                            vec2 f = fract(st);
+                        
+                            // Four corners in 2D of a tile
+                            float a = random(i);
+                            float b = random(i + vec2(1.0, 0.0));
+                            float c = random(i + vec2(0.0, 1.0));
+                            float d = random(i + vec2(1.0, 1.0));
+                        
+                            // Smooth Interpolation
+                        
+                            // Cubic Hermine Curve.  Same as SmoothStep()
+                            vec2 u = f*f*(3.0-2.0*f);
+                            // u = smoothstep(0.,1.,f);
+                        
+                            // Mix 4 coorners percentages
+                            return mix(a, b, u.x) +
+                                    (c - a)* u.y * (1.0 - u.x) +
+                                    (d - b) * u.x * u.y;
+                        }
+
+
 
                         void main(){
                             //vec2 uv = (gl_FragCoord.xy - .5 * res.xy) / res.y;                            
@@ -269,6 +317,7 @@ const SceneContainer = (props) => {
                             vec2 vvx2 = vuv;
                             vvx2.x = 1. - vvx2.x;
 
+
                             vec4 nm = texture(flashLightNormal, vvx2);
                             //vec4 t = texture(flashLightTex, vuv);                        
                             vec2 uvLight = vuv;
@@ -276,8 +325,10 @@ const SceneContainer = (props) => {
     
                             uvLight.x -= mouse.x;
                             uvLight.y += mouse.y;
-    
-                            vec2 ll = vec2( length(uvLight - 0.5) * 1.3 );
+   
+
+                            //vec2 ll = vec2( length(uvLight - 0.5) * 1. );
+                            vec2 ll = vec2( length(uvLight - 0.5) * 2. );                            
     
                             //ll = 1. / ll;
                             //ll *= 0.008;
@@ -285,12 +336,11 @@ const SceneContainer = (props) => {
                             ll = 1. - ll;
                             ll *= 0.05;
                             
-                            vec3 lightVec = normalize( vec3( vec2( ll ), -.5)) + cross( vec3( vec2(ll), 0.0), vec3( mouse.x - uvLight.x, mouse.y - uvLight.y, 0.5) );                        
-                                
+                            vec3 lightVec = normalize( vec3( vec2( ll ), -.2)) + cross( vec3( vec2(ll), 0.0), vec3( mouse.x - uvLight.x, mouse.y - uvLight.y, -.0) );                                                        
                             
-                            vec3 normalVec = normalize((mx() * (nm * 1. + vec4(vNormal, 1.))).xyz );                        
+                            vec3 normalVec = normalize((mx() * (nm + vec4(vNormal, 1.))).xyz );                        
 
-                            float lightIntensity = max(0., dot(lightVec, normalVec)) + .0;        
+                            float lightIntensity = max(0., dot(lightVec, normalVec));        
     
     
     
@@ -302,10 +352,15 @@ const SceneContainer = (props) => {
                             vvx.x = 1. - vvx.x;
 
                             vec3 dif = vec3(dp * 12.) * texture(flashLightTex, vvx).xyz;
+                            //vec3 dif = vec3(dp * 1.5) * texture(flashLightTex, vvx).xyz;    
+                            //vec3 dif = vec3(dp * 12.) * texture(tex3, vvx).xyz;                                
+
+                            //vec3 dif = vec3(dp * .5);                            
     
                             vec3 viewDir = vec3( vec2( dot( vec2(0.5), ldir.xy ) ), .0);
     
                             vec3 r = normalize( reflect(-ldir, normalVec) );
+                            //vec3 r = normalize( (-ldir, normalVec) );                            
                             float pvalue = max(0., dot(viewDir, r) );
                             pvalue = pow( pvalue, 128. );
     
@@ -314,12 +369,17 @@ const SceneContainer = (props) => {
                             vec3 cbCoord = normalize( reflect(-viewDir, normalVec) );
                             vec3 cbSample = textureCube(cubeMap, cbCoord).xyz;
     
-                            //specular += cbSample * .1;
+                            //specular += cbSample * 1.;
+                            //specular += noise(cbSample.xy);
     
+                            // adding specular lighting for color texture
                             vec3 col = lightIntensity + dif * 12. + specular;
+
+                            // light without specular looks best with black and white texture
+                            //vec3 col = lightIntensity + dif * 1.;                            
     
     
-                            //gl_FragColor = texture(flashLightNormal, vuv);
+                            //gl_FragColor = vec4(col, 1.);
                             
                             //gl_FragColor = mix(vec4(1, 0, 0, 1), vec4(col, 1.), contactTransition);
 

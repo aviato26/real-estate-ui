@@ -3,13 +3,15 @@
 #contact-container{
     color: white;
     font-size: 2rem;
+    height: 100vh;
     text-align: center;
-    margin: 23vw 0;
 }
 
 #contact-title{
     font-family: MainFont;
-    font-size: calc(16vw + 10px);
+    font-size: calc(8vw + 10px);
+    top: 50%;
+    transform: translate(0, -50%);
     letter-spacing: 1vw;
     position: relative;
 }
@@ -19,23 +21,23 @@
 }
 
 #contact-title span{
-    font-size: calc(36vw + 10px);
+    font-size: calc(25vw + 10px);
 }
 
 #contact-title p{
     position: relative;
-    top: -6.7vw;
+    top: -5vw;
 }
 
 #contact-title button{
     position: absolute;
-    padding: 1.7vw 7.5vw;
-    font-size: calc(2vw + 10px);
+    padding: 0.7vw 4.5vw;
+    font-size: calc(1.5vw + 10px);
     border: 2px solid white;
-    top: 65%;
+    top: 74%;
     background: transparent;
     color: white;
-    border-radius: 35px;
+    border-radius: 80px;
     left: 50%;
     letter-spacing: 0;
     transition: 0.5s;
@@ -60,9 +62,11 @@
     position: relative;
     z-index: 2;
     font-family: serif;
+    top: 50%;
+    transform: translate(0, -100%);    
     display: flex;
     justify-content: center;
-    padding-bottom: 6vw;
+    padding-bottom: 1vw;
 }
 
 #contact-info div{
